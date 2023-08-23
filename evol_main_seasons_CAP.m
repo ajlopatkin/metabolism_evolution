@@ -21,14 +21,18 @@ k = k_cnt;
 d = d_cnt;
 eff = eff_cnt;
 Nm = Nm_cnt;
+
+% color schemes
 clrs=[36 129 237;42 245 110;222 216 49;247 143 40;208 0 0; 255 255 255]./255;
 
-%% Evolutionary params
+%% Evolutionary parameters
 % NOISE LEVELS
-pct_std_u = 0.05;                    % standard deviation of parameter distributions (assuming all are normally distro except ks)
-pct_std_d = 0.2;                     % standard deviation of parameter distribution (assuming all are normally distro except ks)
-pct_std_k = 0.2;                     % standard deviation of parameter distributions (assuming all are normally distro except ks)
-pct_std_KS = -0.07;                  % the approx <lognormal std dev> of observed lognormal KS values at D0
+% The below four metrics are the coefficients of variance (CV) used to compute
+% the standard deviations for each of the evolutionary parameters
+pct_std_u = 0.05;                    % CV of u (assuming a normal distribution)
+pct_std_d = 0.2;                     % CV of d (assuming a normal distribution)
+pct_std_k = 0.2;                     % CV of k (assuming a normal distribution)
+pct_std_KS = -0.07;                  % CV of Ks (assuming a log-normal distribution)
 
 % script parameters
 num_seasons = 2+21;                 % number of seasons to evolve the cells
@@ -57,6 +61,7 @@ starting_n = 1;                     % number of populations to start each round
 starting_cells = 1e4;               % number of cells per population, season 1
 cap_cutoff = 10^.5;                 % the fold below season1 density at which an iteration must be replaced
 
+%% Initializing the matrices for evolution of parameters
 % Intialize collection matrices
 weighted_u = zeros(iters,num_seasons,length(ause));
 weighted_ks = zeros(iters,num_seasons,length(ause));
@@ -78,6 +83,7 @@ plot_flag = 0;                      % change to 1 if you want to see all cell de
 save_flag = 1;
 
 
+%% Simulation of evolution 
 % loop through antibiotics
 for aa = 1:length(ause)
     aa
@@ -252,7 +258,7 @@ if save_flag
 end
 
 
-
+%% Plots for parameter evolution
 % Comparing the final average parameter values:
 figure(1); hold on
 for q = 1:length(ause)
